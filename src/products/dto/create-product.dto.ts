@@ -1,6 +1,6 @@
 import { Tags } from '../enums/tags.enum';
 
-export interface CreateProductDTO {
+export interface CreateProductDto {
   name: string;
   price: number;
   count: number;
