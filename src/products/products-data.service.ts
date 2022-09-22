@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Product } from './interfaces/product.interface';
 import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import shortid from 'shortid';
 
 @Injectable()
@@ -24,16 +25,17 @@ export class ProductsDataService {
   }
 
   updateProduct(id: string, dto: UpdateProductDto): Product {
-    this.products.map((dto) =>
-      dto.id === id
+    this.products.map((prod) => {
+      prod.id === id
         ? {
             ...dto,
-            id: dto.id,
-            createdAt: dto.createdAt,
+            id: prod.id,
+            createdAt: prod.createdAt,
             updatedAt: new Date(),
           }
-        : dto,
-    );
+        : prod;
+    });
+    return this.getProductById(id);
   }
 
   getProductById(id: string): Product {
