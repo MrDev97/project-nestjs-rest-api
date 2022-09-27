@@ -25,17 +25,17 @@ export class ProductsDataService {
   }
 
   updateProduct(id: string, dto: UpdateProductDto): Product {
-    this.products.map((prod) => {
-      prod.id === id
-        ? {
-            ...dto,
-            id: prod.id,
-            createdAt: prod.createdAt,
-            updatedAt: new Date(),
-          }
-        : prod;
-    });
-    return this.getProductById(id);
+    const product = this.getProductById(id);
+
+    if (product) {
+      return {
+        ...product,
+        ...dto,
+        id: product.id,
+        createdAt: product.createdAt,
+        updatedAt: new Date(),
+      };
+    }
   }
 
   getProductById(id: string): Product {

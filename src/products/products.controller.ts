@@ -19,8 +19,10 @@ import { dateToArray } from 'src/shared/date.helper';
 export class ProductsController {
   constructor(private productRepository: ProductsDataService) {}
 
-  @Get(':id') getProductById(@Param('id') _id_: string): string {
-    return `GetByID ${_id_}`;
+  @Get(':id') getProductById(@Param('id') _id_: string): ExternalProductDto {
+    return this.mapProductToExternal(
+      this.productRepository.getProductById(_id_),
+    );
   }
 
   @Get()
@@ -45,7 +47,7 @@ export class ProductsController {
     this.productRepository.deleteProduct(_id_);
   }
 
-  @Put()
+  @Put(':id')
   updateProduct(
     @Param('id') _id_: string,
     @Body() item: UpdateProductDto,
