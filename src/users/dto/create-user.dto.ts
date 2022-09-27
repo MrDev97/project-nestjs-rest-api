@@ -4,7 +4,7 @@ export interface CreateUserDto {
   name: string;
   surname: string;
   email: string;
-  birthday: Date;
+  birthday: Array<number>;
   adress?: Array<UserAddress>;
   role: Roles;
 }
