@@ -7,6 +7,7 @@ import {
   HttpCode,
   Delete,
   Put,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { dateToArray } from 'src/shared/date.helper';
 import { User } from './interfaces/user.interface';
@@ -18,8 +19,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Controller('users')
 export class UsersController {
   constructor(private userRepository: UsersDataService) {}
-  @Get(':id') getUserById(@Param('id') _id_: string): ExternalUserDto {
-    return this.mapUserToExternal(this.userRepository.getUserById(_id_));
+  @Get(':id') getUserById(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ): ExternalUserDto {
+    return this.mapUserToExternal(this.userRepository.getUserById(id));
   }
 
   @Get()
@@ -45,9 +48,9 @@ export class UsersController {
 
   @Put(':id')
   updateUser(
-    @Param('id') _id_: string,
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() item: UpdateUserDto,
   ): ExternalUserDto {
-    return this.mapUserToExternal(this.userRepository.updateUser(_id_, item));
+    return this.mapUserToExternal(this.userRepository.updateUser(id, item));
   }
 }
