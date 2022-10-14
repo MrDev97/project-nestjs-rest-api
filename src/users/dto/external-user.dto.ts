@@ -2,10 +2,10 @@ import { Roles } from '../enums/roles.enum';
 
 export interface ExternalUserDto {
   id: string;
-  name: string;
-  surname: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  birthday: Array<number>;
+  dateOfBirth: Array<number>;
   adress?: Array<UserAddress>;
   role: Roles;
 }

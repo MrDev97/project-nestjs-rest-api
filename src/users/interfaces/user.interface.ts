@@ -2,10 +2,10 @@ import { Roles } from '../enums/roles.enum';
 
 export interface User {
   id: string;
-  name: string;
-  surname: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  birthday: Date;
+  dateOfBirth: Date;
   adress?: Array<UserAddress>;
   role: Roles;
 }

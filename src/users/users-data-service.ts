@@ -3,7 +3,6 @@ import { User } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { v4 as uuidv4 } from 'uuid';
-import { arrayToDate } from 'src/shared/date.helper';
 
 @Injectable()
 export class UsersDataService {
@@ -13,7 +12,6 @@ export class UsersDataService {
     const savedUser = {
       ...newUser,
       id: uuidv4(),
-      birthday: arrayToDate(newUser.birthday),
     };
 
     this.users.push(savedUser);
