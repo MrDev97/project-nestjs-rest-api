@@ -15,10 +15,15 @@ import { UsersDataService } from './users-data-service';
 import { ExternalUserDto } from './dto/external-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserValidatorService } from './user-validator.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private userRepository: UsersDataService) {}
+  constructor(
+    private userRepository: UsersDataService,
+    private userValidator: UserValidatorService,
+  ) {}
+
   @Get(':id') getUserById(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): ExternalUserDto {
@@ -32,6 +37,7 @@ export class UsersController {
 
   @Post()
   addUser(@Body() item: CreateUserDto): ExternalUserDto {
+    this.userValidator.validateUniqueEmail(item.email);
     return this.mapUserToExternal(this.userRepository.addUser(item));
   }
 
