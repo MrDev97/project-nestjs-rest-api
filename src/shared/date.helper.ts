@@ -10,12 +10,6 @@ export const dateToArray = (date: Date): Array<number> => {
 };
 
 export const arrayToDate = (array: any): Date => {
-  if (
-    !Array.isArray(array) ||
-    array.length !== 6 ||
-    array.some((i) => typeof i !== 'number')
-  )
-    return new Date();
-  else
-    return new Date(array[0], array[1], array[2], array[3], array[4], array[5]);
+  if (!Array.isArray(array) || array.some((i) => typeof i !== 'number'))
+    return new Date(array.value.join());
 };
