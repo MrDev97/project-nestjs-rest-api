@@ -31,7 +31,15 @@ export class Product {
   count: number;
 
   @ManyToMany(() => Tag)
-  @JoinTable()
+  @JoinTable({
+    name: 'products_tags',
+    joinColumn: {
+      name: 'productId',
+    },
+    inverseJoinColumn: {
+      name: 'tagId',
+    },
+  })
   tags: Tag[];
 
   @CreateDateColumn({ type: 'timestamp' })
