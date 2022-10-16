@@ -1,6 +1,6 @@
 import { Tags } from '../enums/tags.enum';
 
-export interface Product {
+export class Product {
   id: string;
   name: string;
   price: number;
