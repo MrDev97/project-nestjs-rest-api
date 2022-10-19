@@ -10,34 +10,40 @@ import {
   ParseUUIDPipe,
   UseGuards,
 } from '@nestjs/common';
-import { Product } from './interfaces/product.interface';
+import { Product } from './db/products.entity';
+import { ProductsDataService } from './products-data.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ExternalProductDto } from './dto/external-product.dto';
-import { ProductsDataService } from './products-data.service';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { dateToArray } from 'src/shared/date.helper';
 import { RoleGuard } from 'src/shared/guards/role.guard';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private productRepository: ProductsDataService) {}
+  constructor(private productService: ProductsDataService) {}
 
   @Get(':id')
-  getProductById(
+  async getProductById(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): ExternalProductDto {
-    return this.mapProductToExternal(this.productRepository.getProductById(id));
+  ): Promise<ExternalProductDto> {
+    return this.mapProductToExternal(
+      await this.productService.getProductById(id),
+    );
   }
 
   @Get()
-  getAllProducts(): Array<Product> {
-    return this.productRepository.getAllProducts();
+  getAllProducts(): Promise<Product[]> {
+    return this.productService.getAllProducts();
   }
 
-  @Post()
   @UseGuards(RoleGuard)
-  addProduct(@Body() item: CreateProductDto): ExternalProductDto {
-    return this.mapProductToExternal(this.productRepository.addProduct(item));
+  @Post()
+  async addProduct(
+    @Body() item: CreateProductDto,
+  ): Promise<ExternalProductDto> {
+    return this.mapProductToExternal(
+      await this.productService.addProduct(item),
+    );
   }
 
   mapProductToExternal(product: Product): ExternalProductDto {
@@ -45,20 +51,21 @@ export class ProductsController {
       ...product,
       createdAt: dateToArray(product.createdAt),
       updatedAt: dateToArray(product.updatedAt),
+      tags: product.tags?.map((i) => i.name),
     };
   }
 
   @Delete(':id') @HttpCode(204) deleteProduct(@Param('id') _id_: string): void {
-    this.productRepository.deleteProduct(_id_);
+    this.productService.deleteProduct(_id_);
   }
 
   @Put(':id')
-  updateProduct(
+  async updateProduct(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() product: UpdateProductDto,
-  ): ExternalProductDto {
+  ): Promise<ExternalProductDto> {
     return this.mapProductToExternal(
-      this.productRepository.updateProduct(id, product),
+      await this.productService.updateProduct(id, product),
     );
   }
 }
