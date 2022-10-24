@@ -4,13 +4,11 @@ import { ProductsDataService } from './products-data.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TagRepository } from './db/tag.repository';
 import { ProductRepository } from './db/products.repository';
+import { Product } from './db/products.entity';
 
 @Module({
   controllers: [ProductsController],
-  providers: [ProductsDataService],
-  imports: [
-    TypeOrmModule.forFeature([TagRepository]),
-    TypeOrmModule.forFeature([ProductRepository]),
-  ],
+  providers: [ProductsDataService, TagRepository, ProductRepository],
+  imports: [TypeOrmModule.forFeature([Product])],
 })
 export class ProductsModule {}

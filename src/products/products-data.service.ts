@@ -15,12 +15,15 @@ export class ProductsDataService {
 
   async addProduct(item: CreateProductDto): Promise<Product> {
     const tags: Tag[] = await this.tagRepository.findTagsByName(item.tags);
+    console.log(tags);
     const productToSave = new Product();
 
     productToSave.name = item.name;
     productToSave.price = item.price;
     productToSave.count = item.count;
     productToSave.tags = tags;
+
+    console.log(productToSave);
 
     return this.productRepository.save(productToSave);
   }
