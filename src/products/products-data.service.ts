@@ -15,7 +15,6 @@ export class ProductsDataService {
 
   async addProduct(item: CreateProductDto): Promise<Product> {
     const tags: Tag[] = await this.tagRepository.findTagsByName(item.tags);
-    console.log(tags);
     const productToSave = new Product();
 
     productToSave.name = item.name;
@@ -23,9 +22,7 @@ export class ProductsDataService {
     productToSave.count = item.count;
     productToSave.tags = tags;
 
-    console.log(productToSave);
-
-    return this.productRepository.save(productToSave);
+    return await this.productRepository.save(productToSave);
   }
 
   async deleteProduct(id: string): Promise<void> {

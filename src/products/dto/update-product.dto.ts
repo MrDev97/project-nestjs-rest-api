@@ -21,7 +21,7 @@ export class UpdateProductDto {
   @IsNumber()
   count: number;
 
-  @IsEnum({ each: true })
+  @IsEnum(Tags, { each: true })
   @IsArray()
-  tags: Array<Tags>;
+  tags: string[];
 }

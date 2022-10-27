@@ -10,5 +10,4 @@ export = {
   database: 'shop',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: true,
-  dropSchema: true,
 };
