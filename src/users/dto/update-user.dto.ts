@@ -3,19 +3,19 @@ import { Transform } from 'class-transformer';
 import { arrayToDate } from '../../shared/date.helper';
 
 export class UpdateUserDto {
-  name: string;
-  surname: string;
+  firstName: string;
+  lastName: string;
   email: string;
   @Transform((d) => arrayToDate(d))
   dateOfBirth: Date;
-  adress?: Array<UserAddress>;
+  address?: Array<UpdateUserAddressDto>;
   role: Roles;
 }
 
-export class UserAddress {
+export class UpdateUserAddressDto {
   country: string;
   city: string;
   street: string;
-  houseNo: string;
-  apartmentNo?: string;
+  houseNo: number;
+  apartmentNo?: number;
 }

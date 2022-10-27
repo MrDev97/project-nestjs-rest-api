@@ -7,6 +7,7 @@ import {
   ValidateNested,
   IsNumber,
   IsEnum,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -39,5 +40,8 @@ export class CreateUserAddressDto {
   street: string;
   @IsNotEmpty()
   @IsNumber()
-  number: number;
+  houseNo: number;
+  @IsOptional()
+  @IsNumber()
+  apartmentNo?: number;
 }

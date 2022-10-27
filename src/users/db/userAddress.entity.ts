@@ -17,11 +17,11 @@ export class UserAddress {
   @Column({ length: 50 })
   street: string;
 
-  @Column({ type: 'int' })
-  houseNo: string;
+  @Column()
+  houseNo: number;
 
-  @Column({ type: 'int' })
-  apartmentNo?: string;
+  @Column({ default: null })
+  apartmentNo?: number;
 
   @ManyToOne(() => User, (user) => user.id, {
     onDelete: 'CASCADE',

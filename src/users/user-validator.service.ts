@@ -4,9 +4,9 @@ import { UsersDataService } from './users-data-service';
 
 @Injectable()
 export class UserValidatorService {
-  constructor(private userRepository: UsersDataService) {}
+  constructor(private userService: UsersDataService) {}
   validateUniqueEmail(email: string): void {
-    const usr = this.userRepository.getUserByEmail(email);
+    const usr = this.userService.getUserByEmail(email);
     if (usr) {
       throw new UserRequireUniqueEmailException();
     }

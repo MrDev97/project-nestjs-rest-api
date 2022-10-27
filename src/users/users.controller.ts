@@ -9,7 +9,7 @@ import {
   Put,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { User } from './interfaces/user.interface';
+import { User } from './db/users.entity';
 import { UsersDataService } from './users-data-service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ExternalUserDto } from './dto/external-user.dto';
@@ -37,14 +37,14 @@ export class UsersController {
 
   @Post()
   async addUser(@Body() item: CreateUserDto): Promise<ExternalUserDto> {
-    this.userValidator.validateUniqueEmail(item.email);
-    return await this.mapUserToExternal(this.userService.addUser(item));
+    // this.userValidator.validateUniqueEmail(item.email);
+    return this.mapUserToExternal(await this.userService.addUser(item));
   }
 
   mapUserToExternal(user: User): ExternalUserDto {
     return {
       ...user,
-      dateOfBirth: dateToArray(user.dateOfBirth),
+      dateOfBirth: dateToArray(new Date(user.dateOfBirth)),
     };
   }
 

@@ -1,19 +1,19 @@
 import { Roles } from '../../shared/enums/roles.enum';
 
-export interface ExternalUserDto {
+export class ExternalUserDto {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
   dateOfBirth: Array<number>;
-  adress?: Array<UserAddress>;
+  address?: Array<ExternalUserAddress>;
   role: Roles;
 }
 
-export interface UserAddress {
+export class ExternalUserAddress {
   country: string;
   city: string;
   street: string;
-  houseNo: string;
-  apartmentNo?: string;
+  houseNo: number;
+  apartmentNo?: number;
 }
