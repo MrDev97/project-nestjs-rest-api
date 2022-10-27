@@ -16,12 +16,16 @@ import { ExternalUserDto } from './dto/external-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserValidatorService } from './user-validator.service';
 import { dateToArray } from 'src/shared/date.helper';
+import { UserRepository } from './db/users.repository';
+import { UserAddressRepository } from './db/userAddress.repository';
 
 @Controller('users')
 export class UsersController {
   constructor(
     private userService: UsersDataService,
     private userValidator: UserValidatorService,
+    private userRepository: UserRepository,
+    private userAddressRepository: UserAddressRepository,
   ) {}
 
   @Get(':id') getUserById(

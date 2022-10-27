@@ -10,7 +10,7 @@ import {
   ParseUUIDPipe,
   UseGuards,
 } from '@nestjs/common';
-import { Product } from './db/products.entity';
+import { Product } from './db/product.entity';
 import { ProductsDataService } from './products-data.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ExternalProductDto } from './dto/external-product.dto';

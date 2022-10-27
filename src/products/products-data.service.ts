@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Product } from './db/products.entity';
+import { Product } from './db/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ProductRepository } from './db/products.repository';
+import { ProductRepository } from './db/product.repository';
 import { TagRepository } from './db/tag.repository';
 import { Tag } from './db/tag.entity';
 
