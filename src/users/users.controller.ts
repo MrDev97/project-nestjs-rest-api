@@ -16,33 +16,29 @@ import { ExternalUserDto } from './dto/external-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserValidatorService } from './user-validator.service';
 import { dateToArray } from 'src/shared/date.helper';
-import { UserRepository } from './db/users.repository';
-import { UserAddressRepository } from './db/userAddress.repository';
 
 @Controller('users')
 export class UsersController {
   constructor(
     private userService: UsersDataService,
     private userValidator: UserValidatorService,
-    private userRepository: UserRepository,
-    private userAddressRepository: UserAddressRepository,
   ) {}
 
-  @Get(':id') getUserById(
+  @Get(':id') async getUserById(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): ExternalUserDto {
-    return this.mapUserToExternal(this.userService.getUserById(id));
+  ): Promise<ExternalUserDto> {
+    return this.mapUserToExternal(await this.userService.getUserById(id));
   }
 
   @Get()
-  getAllUsers(): Array<User> {
+  getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }
 
   @Post()
-  addUser(@Body() item: CreateUserDto): ExternalUserDto {
+  async addUser(@Body() item: CreateUserDto): Promise<ExternalUserDto> {
     this.userValidator.validateUniqueEmail(item.email);
-    return this.mapUserToExternal(this.userService.addUser(item));
+    return await this.mapUserToExternal(this.userService.addUser(item));
   }
 
   mapUserToExternal(user: User): ExternalUserDto {
@@ -57,10 +53,10 @@ export class UsersController {
   }
 
   @Put(':id')
-  updateUser(
+  async updateUser(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body() item: UpdateUserDto,
-  ): ExternalUserDto {
-    return this.mapUserToExternal(this.userService.updateUser(id, item));
+  ): Promise<ExternalUserDto> {
+    return this.mapUserToExternal(await this.userService.updateUser(id, item));
   }
 }

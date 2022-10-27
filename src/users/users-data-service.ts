@@ -2,47 +2,51 @@ import { Injectable } from '@nestjs/common';
 import { User } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { v4 as uuidv4 } from 'uuid';
+import { UserRepository } from './db/users.repository';
+import { UserAddressRepository } from './db/userAddress.repository';
 
 @Injectable()
 export class UsersDataService {
-  private users: Array<User> = [];
+  constructor(
+    private userRepository: UserRepository,
+    private userAddressRepository: UserAddressRepository,
+  ) {}
 
-  addUser(newUser: CreateUserDto): User {
-    const savedUser = {
-      ...newUser,
-      id: uuidv4(),
-    };
+  // addUser(newUser: CreateUserDto): User {
+  //   const savedUser = {
+  //     ...newUser,
+  //     id: uuidv4(),
+  //   };
 
-    this.users.push(savedUser);
-    return savedUser;
+  //   this.users.push(savedUser);
+  //   return savedUser;
+  // }
+
+  async deleteUser(id: string): Promise<void> {
+    this.userRepository.delete(id);
   }
 
-  deleteUser(id: string): void {
-    this.users.filter((i) => i.id === id);
+  // updateUser(id: string, dto: UpdateUserDto): User {
+  //   const user = this.getUserById(id);
+
+  //   if (user) {
+  //     return {
+  //       ...user,
+  //       ...dto,
+  //       id: user.id,
+  //     };
+  //   }
+  // }
+
+  getUserByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({ where: { email } });
   }
 
-  updateUser(id: string, dto: UpdateUserDto): User {
-    const user = this.getUserById(id);
-
-    if (user) {
-      return {
-        ...user,
-        ...dto,
-        id: user.id,
-      };
-    }
+  getUserById(id: string): Promise<User> {
+    return this.userRepository.findOne({ where: { id } });
   }
 
-  getUserByEmail(email: string): User {
-    return this.users.find((i) => i.email === email);
-  }
-
-  getUserById(id: string): User {
-    return this.users.find((i) => i.id === id);
-  }
-
-  getAllUsers(): Array<User> {
-    return this.users;
+  getAllUsers(): Promise<User[]> {
+    return this.userRepository.find();
   }
 }
