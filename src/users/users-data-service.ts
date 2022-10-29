@@ -71,10 +71,6 @@ export class UsersDataService {
     return await this.userRepository.save(userToUpdate);
   }
 
-  getUserByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ where: { email } });
-  }
-
   getUserById(userId: string): Promise<User> {
     return this.userRepository.findOne({ where: { userId } });
   }
