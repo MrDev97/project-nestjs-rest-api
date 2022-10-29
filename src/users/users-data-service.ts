@@ -48,15 +48,16 @@ export class UsersDataService {
     return addresses;
   }
 
-  async deleteUser(id: string): Promise<void> {
-    this.userRepository.delete(id);
+  async deleteUser(userId: string): Promise<void> {
+    this.userRepository.delete(userId);
   }
 
-  async updateUser(id: string, _user_: UpdateUserDto): Promise<User> {
+  async updateUser(userId: string, _user_: UpdateUserDto): Promise<User> {
+    await this.userAddressRepository.deleteUserAddressesByUserId(userId);
     const address: UserAddress[] = await this.prepareUserAddressesToSave(
       _user_.address,
     );
-    const userToUpdate = await this.getUserById(id);
+    const userToUpdate = await this.getUserById(userId);
 
     console.log(userToUpdate);
 
@@ -74,8 +75,8 @@ export class UsersDataService {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  getUserById(id: string): Promise<User> {
-    return this.userRepository.findOne({ where: { id } });
+  getUserById(userId: string): Promise<User> {
+    return this.userRepository.findOne({ where: { userId } });
   }
 
   getAllUsers(): Promise<User[]> {

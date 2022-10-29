@@ -1,7 +1,7 @@
 import { Roles } from '../../shared/enums/roles.enum';
 
 export class ExternalUserDto {
-  id: string;
+  userId: string;
   firstName: string;
   lastName: string;
   email: string;

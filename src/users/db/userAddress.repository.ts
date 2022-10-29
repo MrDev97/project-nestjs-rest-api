@@ -7,4 +7,14 @@ export class UserAddressRepository extends Repository<UserAddress> {
   constructor(private dataSource: DataSource) {
     super(UserAddress, dataSource.createEntityManager());
   }
+
+  async deleteUserAddressesByUserId(userId: string): Promise<void> {
+    const usersAddresses = await this.find({
+      where: {
+        userId,
+      },
+    });
+
+    this.remove(usersAddresses);
+  }
 }

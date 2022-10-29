@@ -25,13 +25,16 @@ export class ProductsDataService {
     return await this.productRepository.save(productToSave);
   }
 
-  async deleteProduct(id: string): Promise<void> {
-    this.productRepository.delete(id);
+  async deleteProduct(productId: string): Promise<void> {
+    this.productRepository.delete(productId);
   }
 
-  async updateProduct(id: string, item: UpdateProductDto): Promise<Product> {
+  async updateProduct(
+    productId: string,
+    item: UpdateProductDto,
+  ): Promise<Product> {
     const tags: Tag[] = await this.tagRepository.findTagsByName(item.tags);
-    const productToUpdate = await this.getProductById(id);
+    const productToUpdate = await this.getProductById(productId);
 
     productToUpdate.name = item.name;
     productToUpdate.price = item.price;
@@ -40,11 +43,11 @@ export class ProductsDataService {
 
     await this.productRepository.save(productToUpdate);
 
-    return this.getProductById(id);
+    return this.getProductById(productId);
   }
 
-  getProductById(id: string): Promise<Product> {
-    return this.productRepository.findOne({ where: { id } });
+  getProductById(productId: string): Promise<Product> {
+    return this.productRepository.findOne({ where: { productId } });
   }
 
   getAllProducts(): Promise<Product[]> {

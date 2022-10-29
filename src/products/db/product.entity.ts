@@ -14,7 +14,7 @@ import { Tag } from './tag.entity';
 })
 export class Product {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  productId: string;
 
   @Column({ length: 100 })
   name: string;

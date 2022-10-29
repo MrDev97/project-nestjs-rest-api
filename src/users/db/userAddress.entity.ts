@@ -6,7 +6,7 @@ import { User } from './users.entity';
 })
 export class UserAddress {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  userId: string;
 
   @Column({ length: 50 })
   country: string;
@@ -23,7 +23,7 @@ export class UserAddress {
   @Column({ default: null })
   apartmentNo?: number;
 
-  @ManyToOne(() => User, (user) => user.id, {
+  @ManyToOne(() => User, (user) => user.userId, {
     onDelete: 'CASCADE',
   })
   user: User;

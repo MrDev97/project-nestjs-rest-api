@@ -1,5 +1,5 @@
 export interface ExternalProductDto {
-  id: string;
+  productId: string;
   name: string;
   price: number;
   count: number;
