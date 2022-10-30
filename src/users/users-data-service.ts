@@ -5,7 +5,7 @@ import { UpdateUserDto, UpdateUserAddressDto } from './dto/update-user.dto';
 import { UserAddress } from './db/userAddress.entity';
 import { UserRepository } from './db/users.repository';
 import { UserAddressRepository } from './db/userAddress.repository';
-import { DataSource, EntityManager } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class UsersDataService {
