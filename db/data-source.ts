@@ -9,11 +9,21 @@ export const dataSourceOptions: DataSourceOptions = {
   username: 'root',
   password: `${process.env.MYSQL_PASSWORD}`,
   database: 'shop',
-  entities: ['dist/**/*.entity{.ts,.js}'],
-  synchronize: false,
+  entities:
+    process.env.NODE_ENV === 'production'
+      ? [__dirname + './**/*.entity{.ts,.js}']
+      : ['dist/**/*.entity{.ts,.js}'],
+  synchronize: process.env.NODE_ENV === 'production' ? false : true,
   dropSchema: false,
   migrationsRun: true,
-  migrations: ['dist/db/migrations/**/*{.ts,.js}'],
+  subscribers:
+    process.env.NODE_ENV === 'production'
+      ? [__dirname + './db/subscribers/**/*{.ts,.js}']
+      : ['dist/db/subscribers/**/*{.ts,.js}'],
+  migrations:
+    process.env.NODE_ENV === 'production'
+      ? [__dirname + './db/migrations/**/*{.ts,.js}']
+      : ['dist/db/migrations/**/*{.ts,.js}'],
 };
 
 const dataSource = new DataSource(dataSourceOptions);
