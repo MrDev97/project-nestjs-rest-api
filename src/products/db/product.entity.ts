@@ -19,6 +19,9 @@ export class Product {
   @Column({ length: 100 })
   name: string;
 
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
   @Column({
     default: 0,
     type: 'float',
