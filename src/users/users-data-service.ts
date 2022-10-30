@@ -5,32 +5,38 @@ import { UpdateUserDto, UpdateUserAddressDto } from './dto/update-user.dto';
 import { UserAddress } from './db/userAddress.entity';
 import { UserRepository } from './db/users.repository';
 import { UserAddressRepository } from './db/userAddress.repository';
+import { DataSource, EntityManager } from 'typeorm';
 
 @Injectable()
 export class UsersDataService {
   constructor(
     private userRepository: UserRepository,
     private userAddressRepository: UserAddressRepository,
+    private dataSource: DataSource,
   ) {}
 
   async addUser(_user_: CreateUserDto): Promise<User> {
-    const address: UserAddress[] = await this.prepareUserAddressesToSave(
-      _user_.address,
-    );
-    const userToSave = new User();
+    return await this.dataSource.transaction(async () => {
+      const userToSave = new User();
 
-    userToSave.firstName = _user_.firstName;
-    userToSave.lastName = _user_.lastName;
-    userToSave.email = _user_.email;
-    userToSave.dateOfBirth = _user_.dateOfBirth;
-    userToSave.role = _user_.role;
-    userToSave.address = address;
+      userToSave.firstName = _user_.firstName;
+      userToSave.lastName = _user_.lastName;
+      userToSave.email = _user_.email;
+      userToSave.dateOfBirth = _user_.dateOfBirth;
+      userToSave.role = _user_.role;
 
-    return await this.userRepository.save(userToSave);
+      userToSave.address = await this.prepareUserAddressesToSave(
+        _user_.address,
+        this.userAddressRepository,
+      );
+
+      return await this.userRepository.save(userToSave);
+    });
   }
 
   async prepareUserAddressesToSave(
     address: CreateUserAddressDto[] | UpdateUserAddressDto[],
+    UserAddressRepository: UserAddressRepository,
   ): Promise<UserAddress[]> {
     const addresses: UserAddress[] = [];
     for (const add of address) {
@@ -45,7 +51,7 @@ export class UsersDataService {
       addresses.push(await this.userAddressRepository.save(addressToSave));
     }
 
-    return addresses;
+    return UserAddressRepository.save(addresses);
   }
 
   async deleteUser(userId: string): Promise<void> {
@@ -53,22 +59,26 @@ export class UsersDataService {
   }
 
   async updateUser(userId: string, _user_: UpdateUserDto): Promise<User> {
-    await this.userAddressRepository.deleteUserAddressesByUserId(userId);
-    const address: UserAddress[] = await this.prepareUserAddressesToSave(
-      _user_.address,
-    );
-    const userToUpdate = await this.getUserById(userId);
+    return await this.dataSource.transaction(async () => {
+      await this.userAddressRepository.deleteUserAddressesByUserId(userId);
 
-    console.log(userToUpdate);
+      const userToUpdate = await this.getUserById(userId);
 
-    userToUpdate.firstName = _user_.firstName;
-    userToUpdate.lastName = _user_.lastName;
-    userToUpdate.email = _user_.email;
-    userToUpdate.dateOfBirth = _user_.dateOfBirth;
-    userToUpdate.role = _user_.role;
-    userToUpdate.address = address;
+      console.log(userToUpdate);
 
-    return await this.userRepository.save(userToUpdate);
+      userToUpdate.firstName = _user_.firstName;
+      userToUpdate.lastName = _user_.lastName;
+      userToUpdate.email = _user_.email;
+      userToUpdate.dateOfBirth = _user_.dateOfBirth;
+      userToUpdate.role = _user_.role;
+
+      userToUpdate.address = await this.prepareUserAddressesToSave(
+        _user_.address,
+        this.userAddressRepository,
+      );
+
+      return await this.userRepository.save(userToUpdate);
+    });
   }
 
   getUserById(userId: string): Promise<User> {
