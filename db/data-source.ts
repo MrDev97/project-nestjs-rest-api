@@ -11,19 +11,16 @@ export const dataSourceOptions: DataSourceOptions = {
   database: 'shop',
   entities:
     process.env.NODE_ENV === 'production'
-      ? [__dirname + './**/*.entity{.ts,.js}']
+      ? [__dirname + '/**/*.entity{.ts,.js}']
       : ['dist/**/*.entity{.ts,.js}'],
-  synchronize: process.env.NODE_ENV === 'production' ? false : true,
-  dropSchema: false,
+  // synchronize: process.env.NODE_ENV === 'production' ? false : true,
+  // dropSchema: process.env.NODE_ENV === 'production' ? false : true,
   migrationsRun: true,
   subscribers:
     process.env.NODE_ENV === 'production'
-      ? [__dirname + './db/subscribers/**/*{.ts,.js}']
+      ? [__dirname + '/db/subscribers/**/*{.ts,.js}']
       : ['dist/db/subscribers/**/*{.ts,.js}'],
-  migrations:
-    process.env.NODE_ENV === 'production'
-      ? [__dirname + './db/migrations/**/*{.ts,.js}']
-      : ['dist/db/migrations/**/*{.ts,.js}'],
+  migrations: ['dist/db/migrations/**/*{.ts,.js}'],
 };
 
 const dataSource = new DataSource(dataSourceOptions);
