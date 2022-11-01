@@ -4,12 +4,14 @@ import { Product } from 'src/products/db/product.entity';
 import dataSource from 'db/data-source';
 import { faker } from '@faker-js/faker';
 import { UserAddress } from 'src/users/db/userAddress.entity';
+import { User } from 'src/users/db/users.entity';
 
 export class InitData1667168157738 implements MigrationInterface {
   public async up(): Promise<void> {
     const tags = await this.saveTags();
     await this.saveProducts(tags);
     const userAddresses = await this.saveUserAddresses();
+    await this.saveUsers(userAddresses);
   }
 
   private async saveTags(): Promise<Tag[]> {
@@ -46,7 +48,7 @@ export class InitData1667168157738 implements MigrationInterface {
   private async saveProducts(tags: Tag[]): Promise<void> {
     const products: Product[] = [];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 250; i++) {
       const product = {
         productId: faker.datatype.uuid(),
         name: faker.commerce.productName(),
@@ -68,10 +70,10 @@ export class InitData1667168157738 implements MigrationInterface {
   private async saveUserAddresses(): Promise<UserAddress[]> {
     const usrAdd: UserAddress[] = [];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1000; i++) {
       const addressToSave = new UserAddress();
       (addressToSave.addressId = faker.datatype.uuid()),
-        (addressToSave.country = faker.address.country()),
+        (addressToSave.country = faker.address.countryCode()),
         (addressToSave.city = faker.address.city()),
         (addressToSave.street = faker.address.street()),
         (addressToSave.houseNo = faker.datatype.number()),
@@ -84,6 +86,52 @@ export class InitData1667168157738 implements MigrationInterface {
     console.log('User Adresses saved');
 
     return usrAdd;
+  }
+
+  private async randomAddresses(
+    addresses: UserAddress[],
+  ): Promise<UserAddress[]> {
+    const opt = Math.floor(Math.random() * 4);
+
+    const addressesArr: UserAddress[] = [];
+
+    for (let i = 0; i < opt; i++) {
+      const address = addresses[Math.floor(Math.random() * addresses.length)];
+
+      const occupied = await dataSource.getRepository(UserAddress).find({
+        where: {
+          addressId: address.addressId,
+        },
+      });
+
+      if (!occupied) {
+        addressesArr.push(address);
+      }
+    }
+    console.log(addressesArr);
+
+    return addressesArr;
+  }
+
+  private async saveUsers(addresses: UserAddress[]): Promise<void> {
+    const usrs = [];
+
+    for (let i = 0; i < 750; i++) {
+      const usr = {
+        userId: faker.datatype.uuid(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        email: faker.internet.email(),
+        dateOfBirth: faker.date.past(),
+        role: faker.helpers.arrayElement(['ADMIN', 'CUSTOMER', 'SELLER']),
+        address: await this.randomAddresses(addresses),
+      };
+      usrs.push(usr);
+    }
+
+    await dataSource.getRepository(User).save(usrs);
+
+    console.log('Users saved');
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {} // eslint-disable-line
