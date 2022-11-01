@@ -3,11 +3,13 @@ import { Tag } from 'src/products/db/tag.entity';
 import { Product } from 'src/products/db/product.entity';
 import dataSource from 'db/data-source';
 import { faker } from '@faker-js/faker';
+import { UserAddress } from 'src/users/db/userAddress.entity';
 
 export class InitData1667168157738 implements MigrationInterface {
   public async up(): Promise<void> {
     const tags = await this.saveTags();
     await this.saveProducts(tags);
+    const userAddresses = await this.saveUserAddresses();
   }
 
   private async saveTags(): Promise<Tag[]> {
@@ -61,6 +63,27 @@ export class InitData1667168157738 implements MigrationInterface {
     await dataSource.getRepository(Product).save(products);
 
     console.log('Products saved');
+  }
+
+  private async saveUserAddresses(): Promise<UserAddress[]> {
+    const usrAdd: UserAddress[] = [];
+
+    for (let i = 0; i < 10; i++) {
+      const addressToSave = new UserAddress();
+      (addressToSave.addressId = faker.datatype.uuid()),
+        (addressToSave.country = faker.address.country()),
+        (addressToSave.city = faker.address.city()),
+        (addressToSave.street = faker.address.street()),
+        (addressToSave.houseNo = faker.datatype.number()),
+        (addressToSave.apartmentNo = faker.datatype.number()),
+        usrAdd.push(
+          await dataSource.getRepository(UserAddress).save(addressToSave),
+        );
+    }
+
+    console.log('User Adresses saved');
+
+    return usrAdd;
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {} // eslint-disable-line

@@ -6,7 +6,7 @@ import { User } from './users.entity';
 })
 export class UserAddress {
   @PrimaryGeneratedColumn('uuid')
-  userId: string;
+  addressId: string;
 
   @Column({ length: 50 })
   country: string;
