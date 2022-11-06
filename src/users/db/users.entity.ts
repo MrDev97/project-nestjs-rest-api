@@ -1,3 +1,4 @@
+import { Order } from 'src/orders/db/order.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Roles } from '../../shared/enums/roles.enum';
 import { UserAddress } from './userAddress.entity';
@@ -7,7 +8,7 @@ import { UserAddress } from './userAddress.entity';
 })
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  userId: string;
+  id: string;
 
   @Column({ length: 50 })
   firstName: string;
@@ -28,4 +29,7 @@ export class User {
 
   @OneToMany(() => UserAddress, (address) => address.user)
   address?: UserAddress[];
+
+  @OneToMany(() => Order, (order) => order)
+  orders?: Order[];
 }

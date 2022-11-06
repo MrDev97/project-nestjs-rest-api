@@ -1,16 +1,16 @@
-import { Product } from 'src/products/db/product.entity';
+import { UserAddress } from 'src/users/db/userAddress.entity';
 import { User } from 'src/users/db/users.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
-  JoinColumn,
+  ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { Statuses } from '../enums/statuses.enum';
+import { OrderProduct } from './orderProduct.entity';
 
 @Entity({
   name: 'orders',
@@ -25,21 +25,23 @@ export class Order {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @OneToMany(() => Product, (product) => product.productId)
-  productList: Product[];
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct)
+  orderedProducts: OrderProduct[];
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (user) => user, {
+    onDelete: 'CASCADE',
+  })
   user: User;
 
-  @OneToOne(() => User, (user) => user.address)
-  @JoinColumn()
-  deliveryAddress: User;
+  @ManyToOne(() => UserAddress, (address) => address.id, {
+    onDelete: 'CASCADE',
+  })
+  deliveryAddress: UserAddress;
 
-  @Column()
+  @Column({ type: 'float' })
   totalAmount: number;
 
-  @Column({ length: 100 })
+  @Column({ type: 'text' })
   additionalInfo: string;
 
   @Column('enum', {

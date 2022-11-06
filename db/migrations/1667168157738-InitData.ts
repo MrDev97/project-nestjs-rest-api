@@ -50,7 +50,7 @@ export class InitData1667168157738 implements MigrationInterface {
 
     for (let i = 0; i < 250; i++) {
       const product = {
-        productId: faker.datatype.uuid(),
+        id: faker.datatype.uuid(),
         name: faker.commerce.productName(),
         description: faker.commerce.productDescription(),
         price: faker.datatype.number({ precision: 0.01 }),
@@ -58,6 +58,7 @@ export class InitData1667168157738 implements MigrationInterface {
         tags: await this.randomTags(tags),
         createdAt: faker.date.past(),
         updatedAt: faker.date.recent(),
+        orderedProducts: null,
       };
       products.push(product);
     }
@@ -72,7 +73,7 @@ export class InitData1667168157738 implements MigrationInterface {
 
     for (let i = 0; i < 1000; i++) {
       const addressToSave = new UserAddress();
-      (addressToSave.addressId = faker.datatype.uuid()),
+      (addressToSave.id = faker.datatype.uuid()),
         (addressToSave.country = faker.address.countryCode()),
         (addressToSave.city = faker.address.city()),
         (addressToSave.street = faker.address.street()),
@@ -100,7 +101,7 @@ export class InitData1667168157738 implements MigrationInterface {
 
       const occupied = await dataSource.getRepository(UserAddress).find({
         where: {
-          addressId: address.addressId,
+          id: address.id,
         },
       });
 

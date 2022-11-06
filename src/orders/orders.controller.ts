@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
-import { OrdersDataService } from './orders-data.service';
+import { OrderDataService } from './order-data.service';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private orderService: OrdersDataService) {}
+  constructor(private orderService: OrderDataService) {}
 }

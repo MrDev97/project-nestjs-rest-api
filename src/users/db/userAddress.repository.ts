@@ -8,10 +8,10 @@ export class UserAddressRepository extends Repository<UserAddress> {
     super(UserAddress, dataSource.createEntityManager());
   }
 
-  async deleteUserAddressesByUserId(addressId: string): Promise<void> {
+  async deleteUserAddressesByUserId(id: string): Promise<void> {
     const usersAddresses = await this.find({
       where: {
-        addressId,
+        id,
       },
     });
 

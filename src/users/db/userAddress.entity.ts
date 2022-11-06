@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Order } from 'src/orders/db/order.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { User } from './users.entity';
 
 @Entity({
@@ -6,7 +13,7 @@ import { User } from './users.entity';
 })
 export class UserAddress {
   @PrimaryGeneratedColumn('uuid')
-  addressId: string;
+  id: string;
 
   @Column({ length: 50 })
   country: string;
@@ -23,8 +30,11 @@ export class UserAddress {
   @Column({ default: null })
   apartmentNo?: number;
 
-  @ManyToOne(() => User, (user) => user.userId, {
+  @ManyToOne(() => User, (user) => user.id, {
     onDelete: 'CASCADE',
   })
   user: User;
+
+  @OneToMany(() => Order, (order) => order)
+  orders?: UserAddress[];
 }
