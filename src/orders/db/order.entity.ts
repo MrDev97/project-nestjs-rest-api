@@ -28,21 +28,21 @@ export class Order {
   @OneToMany(() => OrderProduct, (orderProduct) => orderProduct)
   orderedProducts: OrderProduct[];
 
-  @ManyToOne(() => User, (user) => user, {
+  @ManyToOne(() => User, (user) => user.id, {
     onDelete: 'CASCADE',
   })
-  user: User;
+  userId: User;
 
   @ManyToOne(() => UserAddress, (address) => address.id, {
     onDelete: 'CASCADE',
   })
-  deliveryAddress: UserAddress;
+  addressId: UserAddress;
 
   @Column({ type: 'float' })
-  totalAmount: number;
+  price: number;
 
   @Column({ type: 'text' })
-  additionalInfo: string;
+  description: string;
 
   @Column('enum', {
     enum: Statuses,

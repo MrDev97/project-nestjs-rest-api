@@ -37,5 +37,5 @@ export class OrderProduct {
 
   @OneToOne(() => Order)
   @JoinColumn()
-  order: Order;
+  orderId: Order;
 }
