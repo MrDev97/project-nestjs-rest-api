@@ -34,12 +34,11 @@ export class ExternalOrderDto {
   userEmail: string;
 
   @IsNotEmpty()
-  @IsString()
   userAddress: UserAddress;
 
   @IsNotEmpty()
   @IsDate()
-  createdAt: Date;
+  createdAt: Array<number>;
 
   @IsNotEmpty()
   @IsNumber()

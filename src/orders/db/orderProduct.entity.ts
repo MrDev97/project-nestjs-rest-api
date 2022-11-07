@@ -30,12 +30,12 @@ export class OrderProduct {
   @Column()
   amount: number;
 
-  @ManyToOne(() => Product, (product) => product, {
+  @ManyToOne(() => Product, (product) => product.id, {
     onDelete: 'CASCADE',
   })
   productData: Product;
 
-  @OneToOne(() => Order)
+  @OneToOne(() => Order, (order) => order.id)
   @JoinColumn()
   orderId: Order;
 }

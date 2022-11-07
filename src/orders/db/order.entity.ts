@@ -31,12 +31,12 @@ export class Order {
   @ManyToOne(() => User, (user) => user.id, {
     onDelete: 'CASCADE',
   })
-  userId: User;
+  user: User;
 
   @ManyToOne(() => UserAddress, (address) => address.id, {
     onDelete: 'CASCADE',
   })
-  addressId: UserAddress;
+  address: UserAddress;
 
   @Column({ type: 'float' })
   price: number;
