@@ -1,3 +1,4 @@
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { Product } from 'src/products/db/product.entity';
 import {
   Entity,
@@ -5,8 +6,6 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
-  JoinColumn,
   ManyToOne,
 } from 'typeorm';
 import { Order } from './order.entity';
@@ -30,12 +29,21 @@ export class OrderProduct {
   @Column()
   amount: number;
 
+  @IsNotEmpty()
+  @IsUUID()
+  productId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  productName: string;
+
   @ManyToOne(() => Product, (product) => product.id, {
     onDelete: 'CASCADE',
   })
-  productData: Product;
+  product: Product;
 
-  @OneToOne(() => Order, (order) => order.id)
-  @JoinColumn()
-  orderId: Order;
+  @ManyToOne(() => Order, (order) => order.id, {
+    onDelete: 'CASCADE',
+  })
+  order: Order;
 }

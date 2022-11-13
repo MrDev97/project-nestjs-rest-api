@@ -25,7 +25,7 @@ export class Order {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct)
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
   orderedProducts: OrderProduct[];
 
   @ManyToOne(() => User, (user) => user.id, {

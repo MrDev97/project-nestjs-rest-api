@@ -12,11 +12,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from '../db/data-source';
 
 import * as cors from 'cors';
+import { OrderModule } from './orders/orders.module';
 
 @Module({
   imports: [
     ProductsModule,
     UsersModule,
+    OrderModule,
     TypeOrmModule.forRoot(dataSourceOptions),
   ],
   controllers: [AppController],

@@ -33,8 +33,4 @@ export class CreateOrderProductDto {
   @IsNotEmpty()
   @IsNumber()
   amount: number;
-
-  @IsNotEmpty()
-  @IsUUID()
-  orderId: string;
 }

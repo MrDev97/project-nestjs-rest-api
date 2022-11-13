@@ -40,8 +40,4 @@ export class UpdateOrderProductDto {
   @IsNotEmpty()
   @IsNumber()
   amount: number;
-
-  @IsNotEmpty()
-  @IsUUID()
-  orderId: string;
 }

@@ -1,4 +1,3 @@
-import { OrderProduct } from 'src/orders/db/orderProduct.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,7 +6,6 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
-  OneToMany,
 } from 'typeorm';
 import { Tag } from './tag.entity';
 
@@ -52,7 +50,4 @@ export class Product {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
-
-  @OneToMany(() => OrderProduct, (product) => product)
-  orderedProducts: OrderProduct[];
 }

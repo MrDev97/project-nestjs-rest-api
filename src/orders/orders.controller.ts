@@ -39,22 +39,21 @@ export class OrdersController {
 
   mapOrderToExternal(order: Order): ExternalOrderDto {
     return {
-      ...order,
-      createdAt: dateToArray(order.createdAt),
-      userFirstName: order.user.firstName,
-      userLastName: order.user.lastName,
-      userEmail: order.user.email,
-      userAddress: order.address,
-      orderedProducts: order.orderedProducts.map((i) => {
-        const orderedProduct = {
+      id: order.id,
+      status: order.status,
+      price: order.price,
+      address: order.address,
+      user: order.user,
+      orderedProducts: order.orderedProducts?.map((i) => {
+        return {
           id: i.id,
-          productId: i.productData.id,
-          productName: i.productData.name,
+          productId: i.productId,
+          productName: i.productName,
           price: i.price,
           amount: i.amount,
         };
-        return orderedProduct;
       }),
+      createdAt: dateToArray(order.createdAt),
     };
   }
 

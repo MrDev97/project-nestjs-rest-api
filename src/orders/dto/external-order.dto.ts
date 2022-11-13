@@ -11,6 +11,7 @@ import {
 import { Type } from 'class-transformer';
 import { Statuses } from '../enums/statuses.enum';
 import { UserAddress } from 'src/users/db/userAddress.entity';
+import { User } from 'src/users/db/users.entity';
 
 export class ExternalOrderDto {
   @IsNotEmpty()
@@ -23,18 +24,11 @@ export class ExternalOrderDto {
 
   @IsNotEmpty()
   @IsString()
-  userFirstName: string;
+  user: User;
 
   @IsNotEmpty()
   @IsString()
-  userLastName: string;
-
-  @IsNotEmpty()
-  @IsString()
-  userEmail: string;
-
-  @IsNotEmpty()
-  userAddress: UserAddress;
+  address: UserAddress;
 
   @IsNotEmpty()
   @IsDate()
