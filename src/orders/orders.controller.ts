@@ -42,6 +42,7 @@ export class OrdersController {
       id: order.id,
       status: order.status,
       totalPrice: order.totalPrice,
+      createdAt: dateToArray(order.createdAt),
       address: order.address,
       user: order.user,
       orderedProducts: order.orderedProducts?.map((i) => {
@@ -52,7 +53,6 @@ export class OrdersController {
           count: i.count,
         };
       }),
-      createdAt: dateToArray(order.createdAt),
     };
   }
 

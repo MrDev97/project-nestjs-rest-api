@@ -30,6 +30,6 @@ export class User {
   @OneToMany(() => UserAddress, (address) => address.user)
   address?: UserAddress[];
 
-  @OneToMany(() => Order, (order) => order)
+  @OneToMany(() => Order, (order) => order.user)
   orders?: Order[];
 }
