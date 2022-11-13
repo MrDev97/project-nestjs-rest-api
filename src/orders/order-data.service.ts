@@ -11,6 +11,7 @@ import { User } from 'src/users/db/users.entity';
 import { UserAddress } from 'src/users/db/userAddress.entity';
 import { Statuses } from './enums/statuses.enum';
 import dataSource from 'db/data-source';
+import { Product } from 'src/products/db/product.entity';
 
 @Injectable()
 export class OrderDataService {
@@ -97,10 +98,11 @@ export class OrderDataService {
         id: productsArray[i].productId,
       });
 
+      orderedProduct.product = new Product();
       orderedProduct.amount = productsArray[i].amount;
       orderedProduct.price = productFromDB[0].price;
-      orderedProduct.productId = productFromDB[0].id;
-      orderedProduct.productName = productFromDB[0].name;
+      orderedProduct.product.id = productFromDB[0].id;
+      orderedProduct.product.name = productFromDB[0].name;
 
       await dataSource.getRepository(OrderProduct).save(orderedProduct);
       orderedProducts.push(orderedProduct);

@@ -47,8 +47,7 @@ export class OrdersController {
       orderedProducts: order.orderedProducts?.map((i) => {
         return {
           id: i.id,
-          productId: i.productId,
-          productName: i.productName,
+          product: i.product,
           price: i.price,
           amount: i.amount,
         };

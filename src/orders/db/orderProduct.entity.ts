@@ -1,4 +1,3 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { Product } from 'src/products/db/product.entity';
 import {
   Entity,
@@ -28,14 +27,6 @@ export class OrderProduct {
 
   @Column()
   amount: number;
-
-  @IsNotEmpty()
-  @IsUUID()
-  productId: string;
-
-  @IsNotEmpty()
-  @IsString()
-  productName: string;
 
   @ManyToOne(() => Product, (product) => product.id, {
     onDelete: 'CASCADE',

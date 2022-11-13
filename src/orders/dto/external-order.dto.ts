@@ -12,6 +12,7 @@ import { Type } from 'class-transformer';
 import { Statuses } from '../enums/statuses.enum';
 import { UserAddress } from 'src/users/db/userAddress.entity';
 import { User } from 'src/users/db/users.entity';
+import { Product } from 'src/products/db/product.entity';
 
 export class ExternalOrderDto {
   @IsNotEmpty()
@@ -57,10 +58,6 @@ export class ExternalOrderProductDto {
   amount: number;
 
   @IsNotEmpty()
-  @IsUUID()
-  productId: string;
-
-  @IsNotEmpty()
   @IsString()
-  productName: string;
+  product: Product;
 }
