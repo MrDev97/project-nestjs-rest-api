@@ -35,11 +35,11 @@ export class OrderDataService {
       );
       orderToSave.description = item.description;
       orderToSave.status = Statuses.RECEIVED;
-      orderToSave.price = 0;
+      orderToSave.totalPrice = 0;
 
       orderToSave.orderedProducts.forEach((element) => {
-        orderToSave.price += element.price;
-        return orderToSave.price;
+        orderToSave.totalPrice += element.price;
+        return orderToSave.totalPrice;
       });
 
       return await this.orderRepository.save(orderToSave);
@@ -65,11 +65,11 @@ export class OrderDataService {
       );
       orderToUpdate.description = item.description;
       orderToUpdate.status = item.status;
-      orderToUpdate.price = 0;
+      orderToUpdate.totalPrice = 0;
 
       orderToUpdate.orderedProducts.forEach((element) => {
-        orderToUpdate.price += element.price;
-        return orderToUpdate.price;
+        orderToUpdate.totalPrice += element.price;
+        return orderToUpdate.totalPrice;
       });
 
       await this.orderRepository.save(orderToUpdate);
@@ -99,8 +99,8 @@ export class OrderDataService {
       });
 
       orderedProduct.product = new Product();
-      orderedProduct.amount = productsArray[i].amount;
-      orderedProduct.price = productFromDB[0].price;
+      orderedProduct.count = productsArray[0].count;
+      orderedProduct.price = productFromDB[0].price * productsArray[0].count;
       orderedProduct.product.id = productFromDB[0].id;
       orderedProduct.product.name = productFromDB[0].name;
 

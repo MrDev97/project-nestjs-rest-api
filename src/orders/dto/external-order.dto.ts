@@ -37,7 +37,7 @@ export class ExternalOrderDto {
 
   @IsNotEmpty()
   @IsNumber()
-  price: number;
+  totalPrice: number;
 
   @IsEnum(Statuses, { each: true })
   @IsArray()
@@ -55,7 +55,7 @@ export class ExternalOrderProductDto {
 
   @IsNotEmpty()
   @IsNumber()
-  amount: number;
+  count: number;
 
   @IsNotEmpty()
   @IsString()

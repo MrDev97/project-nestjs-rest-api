@@ -32,5 +32,5 @@ export class CreateOrderProductDto {
 
   @IsNotEmpty()
   @IsNumber()
-  amount: number;
+  count: number;
 }

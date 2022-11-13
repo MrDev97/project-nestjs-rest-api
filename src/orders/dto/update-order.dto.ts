@@ -39,5 +39,5 @@ export class UpdateOrderProductDto {
 
   @IsNotEmpty()
   @IsNumber()
-  amount: number;
+  count: number;
 }

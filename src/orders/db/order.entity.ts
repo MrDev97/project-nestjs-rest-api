@@ -25,7 +25,9 @@ export class Order {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order, {
+    eager: true,
+  })
   orderedProducts: OrderProduct[];
 
   @ManyToOne(() => User, (user) => user.id, {
@@ -35,11 +37,12 @@ export class Order {
 
   @ManyToOne(() => UserAddress, (address) => address.id, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   address: UserAddress;
 
   @Column({ type: 'float' })
-  price: number;
+  totalPrice: number;
 
   @Column({ type: 'text' })
   description: string;

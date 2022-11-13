@@ -26,10 +26,11 @@ export class OrderProduct {
   price: number;
 
   @Column()
-  amount: number;
+  count: number;
 
   @ManyToOne(() => Product, (product) => product.id, {
     onDelete: 'CASCADE',
+    eager: true,
   })
   product: Product;
 
