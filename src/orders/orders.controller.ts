@@ -90,4 +90,16 @@ export class OrdersController {
       await this.orderService.addProductToOrder(id, createOrderProductDto),
     );
   }
+
+  @Delete(':orderId/products/:idOrderProduct')
+  async deleteOrderProduct(
+    @Param('orderId', new ParseUUIDPipe({ version: '4' }))
+    orderId: string,
+    @Param('idOrderProduct', new ParseUUIDPipe({ version: '4' }))
+    idOrderProduct: string,
+  ): Promise<ExternalOrderDto> {
+    return this.mapOrderToExternal(
+      await this.orderService.deleteOrderProduct(orderId, idOrderProduct),
+    );
+  }
 }

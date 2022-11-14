@@ -50,6 +50,11 @@ export class OrderDataService {
     this.orderRepository.delete(id);
   }
 
+  async deleteOrderProduct(id: string, idOrderProduct: string): Promise<Order> {
+    this.orderProductRepository.delete(idOrderProduct);
+    return this.getOrderById(id);
+  }
+
   async updateOrder(id: string, item: UpdateOrderDto): Promise<Order> {
     return await this.dataSource.transaction(async () => {
       await this.orderProductRepository.deleteProductOrderByOrderId(id);
