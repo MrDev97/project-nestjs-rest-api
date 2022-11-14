@@ -86,6 +86,23 @@ export class OrderDataService {
     return this.orderRepository.find();
   }
 
+  async addProductToOrder(
+    id: string,
+    item: CreateOrderProductDto,
+  ): Promise<OrderProduct> {
+    return await this.dataSource.transaction(async () => {
+      const product = await this.productRepository.findOne({
+        where: { id: item.productId },
+      });
+
+      return await this.orderProductRepository.addProductToOrder(
+        id,
+        item,
+        product,
+      );
+    });
+  }
+
   async saveOrderProducts(
     productsArray: CreateOrderProductDto[],
   ): Promise<OrderProduct[]> {

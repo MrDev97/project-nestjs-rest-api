@@ -7,14 +7,19 @@ import {
   Delete,
   HttpCode,
   Put,
+  Patch,
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { Order } from './db/order.entity';
 import { OrderDataService } from './order-data.service';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { ExternalOrderDto } from './dto/external-order.dto';
+import { CreateOrderDto, CreateOrderProductDto } from './dto/create-order.dto';
+import {
+  ExternalOrderDto,
+  ExternalOrderProductDto,
+} from './dto/external-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { dateToArray } from 'src/shared/date.helper';
+import { OrderProduct } from './db/orderProduct.entity';
 
 @Controller('orders')
 export class OrdersController {
@@ -46,13 +51,19 @@ export class OrdersController {
       address: order.address,
       user: order.user,
       orderedProducts: order.orderedProducts?.map((i) => {
-        return {
-          id: i.id,
-          product: i.product,
-          price: i.price,
-          count: i.count,
-        };
+        return this.mapToExternalOrderProduct(i);
       }),
+    };
+  }
+
+  mapToExternalOrderProduct(
+    orderProduct: OrderProduct,
+  ): ExternalOrderProductDto {
+    return {
+      id: orderProduct.id,
+      product: orderProduct.product,
+      price: orderProduct.price,
+      count: orderProduct.count,
     };
   }
 
@@ -67,6 +78,16 @@ export class OrdersController {
   ): Promise<ExternalOrderDto> {
     return this.mapOrderToExternal(
       await this.orderService.updateOrder(id, order),
+    );
+  }
+
+  @Patch(':id/products')
+  async addProductToOrder(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() createOrderProductDto: CreateOrderProductDto,
+  ): Promise<ExternalOrderProductDto> {
+    return this.mapToExternalOrderProduct(
+      await this.orderService.addProductToOrder(id, createOrderProductDto),
     );
   }
 }
