@@ -108,6 +108,15 @@ export class OrderDataService {
     });
   }
 
+  async updateUserAddress(id: string, item): Promise<Order> {
+    return await this.dataSource.transaction(async () => {
+      return await this.orderRepository.updateUserAddress(
+        id,
+        item.newAddressId,
+      );
+    });
+  }
+
   async saveOrderProducts(
     productsArray: CreateOrderProductDto[],
   ): Promise<OrderProduct[]> {

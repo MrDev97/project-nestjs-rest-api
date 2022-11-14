@@ -84,10 +84,10 @@ export class OrdersController {
   @Patch(':id/products')
   async addProductToOrder(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-    @Body() createOrderProductDto: CreateOrderProductDto,
+    @Body() item: CreateOrderProductDto,
   ): Promise<ExternalOrderProductDto> {
     return this.mapToExternalOrderProduct(
-      await this.orderService.addProductToOrder(id, createOrderProductDto),
+      await this.orderService.addProductToOrder(id, item),
     );
   }
 
@@ -100,6 +100,16 @@ export class OrdersController {
   ): Promise<ExternalOrderDto> {
     return this.mapOrderToExternal(
       await this.orderService.deleteOrderProduct(orderId, idOrderProduct),
+    );
+  }
+
+  @Patch(':orderId/:userAddressId')
+  async updateOrderAddress(
+    @Param('orderId', new ParseUUIDPipe({ version: '4' })) orderId: string,
+    @Body() item: string,
+  ): Promise<ExternalOrderDto> {
+    return this.mapOrderToExternal(
+      await this.orderService.updateUserAddress(orderId, item),
     );
   }
 }
