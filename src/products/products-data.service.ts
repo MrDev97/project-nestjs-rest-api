@@ -50,7 +50,7 @@ export class ProductsDataService {
     return this.productRepository.findOne({ where: { id } });
   }
 
-  getAllProducts(): Promise<Product[]> {
-    return this.productRepository.find();
+  getAllProducts(query): Promise<Product[]> {
+    return this.productRepository.findAll(query);
   }
 }
