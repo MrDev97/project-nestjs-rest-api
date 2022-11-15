@@ -8,8 +8,10 @@ import {
   Delete,
   Put,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { User } from './db/users.entity';
+import { UsersQuery } from './queries/users-query.interface';
 import { UsersDataService } from './users-data-service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ExternalUserDto } from './dto/external-user.dto';
@@ -30,9 +32,18 @@ export class UsersController {
     return this.mapUserToExternal(await this.userService.getUserById(id));
   }
 
+  // @Get()
+  // getAllUsers(): Promise<User[]> {
+  //   return this.userService.getAllUsers();
+  // }
+
   @Get()
-  getAllUsers(): Promise<User[]> {
-    return this.userService.getAllUsers();
+  async getAllUsers(
+    @Query() query: UsersQuery,
+  ): Promise<Array<ExternalUserDto>> {
+    return (await this.userService.getAllUsers(query)).map((i) =>
+      this.mapUserToExternal(i),
+    );
   }
 
   @Post()

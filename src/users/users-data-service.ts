@@ -85,7 +85,7 @@ export class UsersDataService {
     return this.userRepository.findOne({ where: { id } });
   }
 
-  getAllUsers(): Promise<User[]> {
-    return this.userRepository.find();
+  getAllUsers(query): Promise<User[]> {
+    return this.userRepository.findAll(query);
   }
 }
